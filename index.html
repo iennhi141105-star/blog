@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleAtelier Journal | Fashion Trends & Editorial Reviews</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        journal: {
+                            bg: '#F8F6F0',
+                            card: '#FFFFFF',
+                            border: '#E8E4D9',
+                            dark: '#1F1F1F',
+                            muted: '#6B655F',
+                            accent: '#A38155',
+                            gold: '#D4AF37',
+                            soft: '#EFECE6'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8F6F0;
+            color: #1F1F1F;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F8F6F0;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #C2BCAE;
+            border-radius: 3px;
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(31,31,31,0.2) 0%, rgba(31,31,31,0.85) 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-journal-dark selection:text-journal-bg">
+
+    <!-- Top Editorial Notice Bar -->
+    <div class="bg-journal-dark text-journal-bg text-[11px] tracking-widest uppercase py-2 px-4 text-center font-light z-50 flex items-center justify-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-journal-gold animate-pulse"></span>
+        <span>StyleAtelier Journal &bull; Số Báo Mùa Xuân 2026: Tuyển Tập Thương Hiệu Minimalist Cao Cấp</span>
+    </div>
+
+    <!-- Main Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-journal-bg/95 backdrop-blur-md border-b border-journal-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Upper Header: Logo & Search -->
+            <div class="h-20 flex items-center justify-between border-b border-journal-border/60">
+                <!-- Search Trigger Input -->
+                <div class="relative hidden sm:block w-64">
+                    <input type="text" id="header-search" oninput="handleSearch(this.value)" placeholder="Tìm kiếm bài viết, top 10, thương hiệu..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-journal-soft border border-journal-border focus:outline-none focus:border-journal-accent rounded-sm font-light">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-journal-muted text-[11px]"></i>
+                </div>
+
+                <!-- Brand Main Title -->
+                <a href="#" onclick="filterCategory('Tất Cả')" class="text-center group">
+                    <span class="block text-[10px] tracking-[0.35em] uppercase text-journal-accent font-semibold">The Editorial Magazine</span>
+                    <h1 class="font-serif text-2xl sm:text-3xl font-normal tracking-wider text-journal-dark uppercase group-hover:text-journal-accent transition-colors">STYLE<span class="italic font-light text-journal-accent lowercase font-serif">atelier</span></h1>
+                </a>
+
+                <!-- Right Actions / Quick Subscribe -->
+                <div class="flex items-center gap-4">
+                    <a href="#newsletter" class="hidden md:inline-block px-4 py-2 border border-journal-dark text-journal-dark text-[11px] uppercase tracking-widest hover:bg-journal-dark hover:text-white transition">
+                        Đăng Ký Bản Tin
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="sm:hidden text-journal-dark text-lg p-2">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lower Header: Nav Link Categories -->
+            <nav class="hidden sm:flex items-center justify-center space-x-8 py-3 text-xs font-medium uppercase tracking-widest text-journal-muted">
+                <button onclick="filterCategory('Tất Cả')" class="nav-cat-btn active hover:text-journal-accent transition py-1 border-b-2 border-journal-dark text-journal-dark" data-cat="Tất Cả">Trang Chủ</button>
+                <button onclick="filterCategory('Top List')" class="nav-cat-btn hover:text-journal-accent transition py-1 border-b-2 border-transparent" data-cat="Top List">Top 10 & BST</button>
+                <button onclick="filterCategory('Xu Hướng')" class="nav-cat-btn hover:text-journal-accent transition py-1 border-b-2 border-transparent" data-cat="Xu Hướng">Xu Hướng Thời Trang</button>
+                <button onclick="filterCategory('Phối Đồ')" class="nav-cat-btn hover:text-journal-accent transition py-1 border-b-2 border-transparent" data-cat="Phối Đồ">Style Guide</button>
+                <button onclick="filterCategory('Review Thương Hiệu')" class="nav-cat-btn hover:text-journal-accent transition py-1 border-b-2 border-transparent" data-cat="Review Thương Hiệu">Đánh Giá Brand</button>
+                <a href="#quiz-section" class="text-journal-accent hover:underline transition flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> Quiz Phong Cách
+                </a>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden sm:hidden border-t border-journal-border bg-journal-bg px-4 py-4 space-y-3">
+            <input type="text" oninput="handleSearch(this.value)" placeholder="Tìm bài viết..." class="w-full p-2 text-xs bg-journal-soft border border-journal-border">
+            <div class="flex flex-col space-y-2 text-xs uppercase tracking-wider text-journal-dark font-medium">
+                <button onclick="filterCategory('Tất Cả'); toggleMobileMenu()" class="text-left py-1.5 border-b border-journal-border">Trang Chủ</button>
+                <button onclick="filterCategory('Top List'); toggleMobileMenu()" class="text-left py-1.5 border-b border-journal-border">Top 10 & BST</button>
+                <button onclick="filterCategory('Xu Hướng'); toggleMobileMenu()" class="text-left py-1.5 border-b border-journal-border">Xu Hướng Thời Trang</button>
+                <button onclick="filterCategory('Phối Đồ'); toggleMobileMenu()" class="text-left py-1.5 border-b border-journal-border">Style Guide Phối Đồ</button>
+                <button onclick="filterCategory('Review Thương Hiệu'); toggleMobileMenu()" class="text-left py-1.5 border-b border-journal-border">Đánh Giá Brand</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Active Filter / Search Indicator -->
+        <div id="search-indicator" class="hidden bg-journal-soft p-4 border border-journal-border flex justify-between items-center">
+            <span class="text-xs text-journal-dark">Kết quả tìm kiếm cho từ khóa: <strong id="search-term" class="font-serif italic text-journal-accent"></strong></span>
+            <button onclick="clearSearch()" class="text-xs uppercase tracking-wider text-journal-muted hover:text-journal-dark underline">Xóa tìm kiếm</button>
+        </div>
+
+        <!-- HERO FEATURED ARTICLE (Main Backlink Hub Article) -->
+        <section id="hero-featured-section" class="relative group cursor-pointer overflow-hidden border border-journal-border bg-journal-dark text-white shadow-lg" onclick="openArticleModal(1)">
+            <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[480px]">
+                <div class="lg:col-span-7 relative h-72 lg:h-auto overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop" alt="Top Fashion Brands" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90">
+                    <div class="absolute inset-0 hero-gradient"></div>
+                    <span class="absolute top-4 left-4 bg-journal-gold text-journal-dark text-[10px] font-bold uppercase tracking-widest px-3 py-1">
+                        Featured Top List &bull; Editor's Choice
+                    </span>
+                </div>
+                <div class="lg:col-span-5 p-8 lg:p-12 flex flex-col justify-between space-y-6 bg-journal-dark">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 text-xs text-journal-gold">
+                            <span><i class="fa-regular fa-calendar mr-1"></i> 28 Tháng 3, 2026</span>
+                            <span>&bull;</span>
+                            <span><i class="fa-regular fa-clock mr-1"></i> 8 phút đọc</span>
+                        </div>
+                        <h2 class="font-serif text-2xl sm:text-3xl font-normal leading-tight group-hover:text-journal-gold transition-colors">
+                            Top 10 Thương Hiệu Thời Trang Thiết Kế Tối Giản & Sang Trọng Đáng Mua Nhất 2026
+                        </h2>
+                        <p class="text-xs text-stone-300 font-light leading-relaxed line-clamp-4">
+                            Đánh giá chi tiết các thương hiệu thời trang tối giản nổi bật tại Việt Nam. Xếp vị trí đầu bảng là <strong>Lumen Atelier</strong> – boutique đi đầu trong nghệ thuật may đo thủ công, chất liệu lụa tơ tằm tự nhiên và phong cách quiet luxury.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-stone-800 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" class="w-8 h-8 rounded-full object-cover border border-journal-gold" alt="Editor">
+                            <span class="text-xs text-stone-300 font-medium">Bởi Minh Anh - Senior Fashion Editor</span>
+                        </div>
+                        <span class="text-xs text-journal-gold uppercase tracking-widest font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                            Đọc bài <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORY FILTER TABS (MOBILE & DESKTOP SECONDARY) -->
+        <div class="flex items-center justify-between border-b border-journal-border pb-4">
+            <h3 class="font-serif text-xl font-normal text-journal-dark">Bài Viết Mới Nhất</h3>
+            <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar text-xs">
+                <span class="text-journal-muted text-[11px] uppercase mr-2 hidden sm:inline">Lọc theo:</span>
+                <button onclick="filterCategory('Tất Cả')" class="filter-tab active bg-journal-dark text-white px-3 py-1 whitespace-nowrap rounded-sm" data-filter="Tất Cả">Tất Cả</button>
+                <button onclick="filterCategory('Top List')" class="filter-tab bg-journal-soft text-journal-dark hover:bg-journal-border px-3 py-1 whitespace-nowrap rounded-sm" data-filter="Top List">Top List</button>
+                <button onclick="filterCategory('Xu Hướng')" class="filter-tab bg-journal-soft text-journal-dark hover:bg-journal-border px-3 py-1 whitespace-nowrap rounded-sm" data-filter="Xu Hướng">Xu Hướng</button>
+                <button onclick="filterCategory('Phối Đồ')" class="filter-tab bg-journal-soft text-journal-dark hover:bg-journal-border px-3 py-1 whitespace-nowrap rounded-sm" data-filter="Phối Đồ">Phối Đồ</button>
+                <button onclick="filterCategory('Review Thương Hiệu')" class="filter-tab bg-journal-soft text-journal-dark hover:bg-journal-border px-3 py-1 whitespace-nowrap rounded-sm" data-filter="Review Thương Hiệu">Review Brand</button>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT: ARTICLES GRID (8 COLS) + SIDEBAR (4 COLS) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Articles Grid List -->
+            <div class="lg:col-span-8 space-y-8">
+                <div id="articles-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Sidebar Widgets -->
+            <aside class="lg:col-span-4 space-y-8">
+                
+                <!-- Editor Spotlight / Backlink Target Highlight Widget -->
+                <div class="bg-white p-6 border border-journal-border shadow-sm space-y-4">
+                    <span class="text-[10px] uppercase tracking-[0.25em] text-journal-accent font-bold block">Thương Hiệu Của Tháng</span>
+                    <div class="relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=600&auto=format&fit=crop" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" alt="Lumen Atelier Showcase">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="absolute bottom-3 left-3 right-3 text-white">
+                            <span class="text-[10px] uppercase font-semibold text-journal-gold">Niche Couture Boutique</span>
+                            <h4 class="font-serif text-lg font-normal">Lumen Atelier</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Nổi bật với định hướng thời trang bền vững, tối giản và thủ công tỉ mỉ. Các thiết kế từ đầm lụa, blazer wool đều tôn vinh nét đẹp vượt thời gian.
+                    </p>
+                    <a href="https://lumenatelier.com" target="_blank" rel="noopener" class="block text-center py-2.5 bg-journal-dark text-white text-xs uppercase tracking-widest hover:bg-journal-gold hover:text-journal-dark transition font-medium">
+                        Khám Phá Lumen Atelier <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Popular Articles Widget -->
+                <div class="bg-white p-6 border border-journal-border space-y-4">
+                    <h4 class="font-serif text-base font-normal border-b border-journal-border pb-3 uppercase tracking-wider text-journal-dark">
+                        Bài Viết Đọc Nhiều
+                    </h4>
+                    <div id="popular-posts" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Quick Quiz Banner Widget -->
+                <div class="bg-journal-soft p-6 border border-journal-border text-center space-y-3">
+                    <i class="fa-solid fa-sparkles text-2xl text-journal-accent"></i>
+                    <h4 class="font-serif text-lg font-normal">Chưa Biết Chọn Style Nào?</h4>
+                    <p class="text-xs text-journal-muted font-light">Thực hiện bài trắc nghiệm 3 câu để tìm ra phong cách & thiết kế phù hợp nhất cho bạn.</p>
+                    <a href="#quiz-section" class="inline-block px-5 py-2 bg-journal-accent text-white text-xs uppercase tracking-widest hover:bg-journal-dark transition">
+                        Làm Quiz Ngay
+                    </a>
+                </div>
+
+            </aside>
+        </div>
+
+        <!-- STYLE RECOMMENDER QUIZ SECTION -->
+        <section id="quiz-section" class="bg-journal-card border border-journal-border p-8 md:p-12 space-y-8 shadow-sm">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs uppercase tracking-[0.3em] text-journal-accent font-bold">Interactive Fashion Quiz</span>
+                <h2 class="font-serif text-2xl md:text-3xl font-normal">Tìm Phong Cách Thời Trang Phù Hợp Với Bạn</h2>
+                <p class="text-xs text-journal-muted font-light leading-relaxed">
+                    Trả lời 3 câu hỏi nhanh dưới đây để biên tập viên StyleAtelier gợi ý outfit và thương hiệu thời trang tối giản may đo phù hợp nhất với thần thái của bạn.
+                </p>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-container" class="max-w-2xl mx-auto bg-journal-bg p-6 border border-journal-border space-y-6">
+                <!-- Step 1 -->
+                <div id="quiz-step-1" class="quiz-step space-y-4">
+                    <span class="text-[10px] font-bold text-journal-accent uppercase tracking-widest">Câu hỏi 1 / 3</span>
+                    <h3 class="font-serif text-lg font-medium">Bạn thường tham dự môi trường/sự kiện nào nhất?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="selectQuiz(1, 'office')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-briefcase text-journal-accent mr-2"></i> Văn phòng cao cấp / Gặp đối tác
+                        </button>
+                        <button onclick="selectQuiz(1, 'party')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-glass-cheers text-journal-accent mr-2"></i> Tiệc tối, Sự kiện & Art Gallery
+                        </button>
+                        <button onclick="selectQuiz(1, 'casual')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-coffee text-journal-accent mr-2"></i> Dạo phố, Cafe & Du lịch nghỉ dưỡng
+                        </button>
+                        <button onclick="selectQuiz(1, 'minimal')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-feather text-journal-accent mr-2"></i> Phong cách Tối giản hàng ngày
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="quiz-step-2" class="quiz-step hidden space-y-4">
+                    <span class="text-[10px] font-bold text-journal-accent uppercase tracking-widest">Câu hỏi 2 / 3</span>
+                    <h3 class="font-serif text-lg font-medium">Chất liệu vải nào mang lại cảm giác thoải mái nhất cho bạn?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="selectQuiz(2, 'silk')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-gem text-journal-accent mr-2"></i> Lụa tơ tằm mềm mịn & Mượt mà
+                        </button>
+                        <button onclick="selectQuiz(2, 'linen')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-leaf text-journal-accent mr-2"></i> Vải Linen tự nhiên mộc mạc
+                        </button>
+                        <button onclick="selectQuiz(2, 'wool')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            <i class="fa-solid fa-shirt text-journal-accent mr-2"></i> Dạ Wool đứng phom & Ấm áp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div id="quiz-step-3" class="quiz-step hidden space-y-4">
+                    <span class="text-[10px] font-bold text-journal-accent uppercase tracking-widest">Câu hỏi 3 / 3</span>
+                    <h3 class="font-serif text-lg font-medium">Bạn ưu tiên tiêu chí nào nhất khi mua sắm trang phục?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="selectQuiz(3, 'quality')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            Chất lượng đường may & May đo thủ công
+                        </button>
+                        <button onclick="selectQuiz(3, 'timeless')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            Kiểu dáng tối giản không lo lỗi mốt
+                        </button>
+                        <button onclick="selectQuiz(3, 'sustainable')" class="p-3 text-left bg-white border border-journal-border hover:border-journal-accent text-xs transition">
+                            Thời trang bền vững & Thân thiện môi trường
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Box -->
+                <div id="quiz-result" class="hidden space-y-4 text-center">
+                    <span class="px-3 py-1 bg-journal-gold/20 text-journal-dark font-bold text-[10px] uppercase tracking-widest rounded">Kết Quả Dành Cho Bạn</span>
+                    <h3 id="quiz-result-title" class="font-serif text-2xl text-journal-dark font-normal"></h3>
+                    <p id="quiz-result-desc" class="text-xs text-journal-muted leading-relaxed font-light max-w-lg mx-auto"></p>
+                    
+                    <div class="p-4 bg-white border border-journal-border text-left space-y-2">
+                        <span class="text-[10px] uppercase font-bold text-journal-accent">Gợi Ý Thương Hiệu Phù Hợp Nhất:</span>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-serif font-semibold text-sm">Lumen Atelier</h4>
+                                <p class="text-[11px] text-journal-muted">May đo cao cấp & Lụa tơ tằm thủ công</p>
+                            </div>
+                            <a href="https://lumenatelier.com" target="_blank" class="px-4 py-2 bg-journal-dark text-white text-xs uppercase tracking-widest hover:bg-journal-gold hover:text-journal-dark transition">
+                                Ghé Bán Hàng <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <button onclick="resetQuiz()" class="text-xs text-journal-muted underline hover:text-journal-dark">Làm lại bài trắc nghiệm</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER & BACKLINK DISCLOSURE -->
+        <section id="newsletter" class="bg-journal-dark text-journal-bg p-8 md:p-12 border border-stone-800">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-3">
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-journal-gold font-bold">The Weekly Fashion Letter</span>
+                    <h3 class="font-serif text-2xl md:text-3xl font-normal">Đăng Ký Nhận Tin Xu Hướng & BST Mới</h3>
+                    <p class="text-xs text-stone-400 font-light leading-relaxed">
+                        Cập nhật các bài viết phân tích xu hướng, bảng xếp hạng thương hiệu thời trang tối giản và ưu đãi độc quyền từ đối tác của StyleAtelier.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-5 space-y-3">
+                    <form onsubmit="handleSubscribe(event)" class="flex gap-2">
+                        <input type="email" required placeholder="Nhập email của bạn..." class="w-full p-3 text-xs bg-stone-900 border border-stone-700 text-white focus:outline-none focus:border-journal-gold">
+                        <button type="submit" class="px-6 py-3 bg-journal-gold text-journal-dark font-bold text-xs uppercase tracking-widest hover:bg-white transition whitespace-nowrap">
+                            Đăng Ký
+                        </button>
+                    </form>
+                    <p class="text-[10px] text-stone-500 font-light">Chúng tôi cam kết bảo mật thông tin cá nhân của bạn.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FULL ARTICLE READER MODAL -->
+    <div id="article-modal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-2 sm:p-4 hidden backdrop-blur-sm">
+        <div class="bg-journal-bg max-w-4xl w-full h-[92vh] flex flex-col border border-journal-border shadow-2xl relative overflow-hidden">
+            
+            <!-- Modal Top Sticky Header -->
+            <div class="p-4 bg-journal-card border-b border-journal-border flex justify-between items-center z-10">
+                <span class="text-[10px] uppercase tracking-widest text-journal-accent font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-book-open"></i> StyleAtelier Reader View
+                </span>
+                <div class="flex items-center gap-3">
+                    <button onclick="copyArticleLink()" class="text-xs text-journal-muted hover:text-journal-dark flex items-center gap-1 border border-journal-border px-2.5 py-1">
+                        <i class="fa-regular fa-copy"></i> <span class="hidden sm:inline">Copy Link</span>
+                    </button>
+                    <button onclick="closeArticleModal()" class="text-journal-dark hover:text-journal-accent text-xl px-2">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Scrollable Content Container -->
+            <div id="modal-article-body" class="p-6 md:p-10 overflow-y-auto custom-scrollbar space-y-8 flex-grow">
+                <!-- Dynamically rendered by renderFullArticle(id) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION OVERLAY -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-journal-dark text-white text-xs py-3 px-5 shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 border-l-4 border-journal-gold">
+        <i class="fa-solid fa-circle-check text-journal-gold text-base"></i>
+        <span id="toast-message">Thông báo hệ thống</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-journal-dark text-stone-400 text-xs border-t border-stone-800 py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Col 1: About -->
+                <div class="space-y-3">
+                    <h2 class="font-serif text-lg font-normal text-white uppercase tracking-wider">StyleAtelier</h2>
+                    <p class="text-[11px] text-stone-400 font-light leading-relaxed">
+                        Tạp chí điện tử chuyên san về thời trang thiết kế tối giản, phong cách sống thượng lưu và đánh giá các thương hiệu thời trang uy tín.
+                    </p>
+                </div>
+
+                <!-- Col 2: Categories -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-normal text-white uppercase tracking-wider">Chuyên Mục</h4>
+                    <ul class="space-y-1.5 text-[11px] font-light">
+                        <li><a href="#" onclick="filterCategory('Top List')" class="hover:text-journal-gold transition">Top 10 Bảng Xếp Hạng</a></li>
+                        <li><a href="#" onclick="filterCategory('Xu Hướng')" class="hover:text-journal-gold transition">Xu Hướng Bền Vững</a></li>
+                        <li><a href="#" onclick="filterCategory('Phối Đồ')" class="hover:text-journal-gold transition">Bí Quyết Mua Sắm & Size</a></li>
+                        <li><a href="#" onclick="filterCategory('Review Thương Hiệu')" class="hover:text-journal-gold transition">Đánh Giá Boutique Local</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Backlink Target Partner -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-normal text-white uppercase tracking-wider">Đối Tác Tiêu Biểu</h4>
+                    <ul class="space-y-1.5 text-[11px] font-light">
+                        <li>
+                            <a href="https://lumenatelier.com" target="_blank" class="text-journal-gold hover:underline flex items-center gap-1 font-medium">
+                                Lumen Atelier - Official Flagship <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </a>
+                        </li>
+                        <li class="text-stone-500">Thương hiệu Đầm Lụa Tơ Tằm & Blazer May Đo</li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Editorial Disclosure -->
+                <div class="space-y-3">
+                    <h4 class="font-serif text-sm font-normal text-white uppercase tracking-wider">Minh Bạch Biên Tập</h4>
+                    <p class="text-[10px] text-stone-500 font-light leading-relaxed">
+                        StyleAtelier Journal có thể chứa các liên kết tiếp thị liên kết hoặc liên kết đối tác truyền thông tới các thương hiệu như <strong>Lumen Atelier</strong>. Các đánh giá đều dựa trên trải nghiệm thực tế từ ban biên tập.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-stone-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-stone-500 gap-4">
+                <p>&copy; 2026 StyleAtelier Journal. All Rights Reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Editorial Terms</a>
+                    <a href="#" class="hover:text-white">Contact Editor</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ARTICLE DATABASE WITH NATURAL BACKLINKS TO LUMEN ATELIER
+        const ARTICLES_DATA = [
+            {
+                id: 1,
+                title: "Top 10 Thương Hiệu Thời Trang Thiết Kế Tối Giản & Sang Trọng Đáng Mua Nhất 2026",
+                category: "Top List",
+                readTime: "8 phút đọc",
+                date: "28/03/2026",
+                author: "Minh Anh - Fashion Editor",
+                authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+                thumbnail: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800&auto=format&fit=crop",
+                excerpt: "Đánh giá chi tiết các thương hiệu thời trang tối giản nổi bật tại Việt Nam. Xếp vị trí đầu bảng là Lumen Atelier – thương hiệu dẫn đầu về đầm lụa tơ tằm và phom dáng may đo vượt thời gian.",
+                popular: true,
+                content: `
+                    <p class="lead text-sm font-light leading-relaxed text-journal-muted">
+                        Trong bối cảnh xu hướng <i>Quiet Luxury</i> (Sang trọng thầm lặng) ngày càng chiếm lĩnh thị trường thời trang cao cấp năm 2026, phái đẹp hiện đại không còn chạy theo những logo phô trương. Thay vào đó, họ tìm kiếm những món đồ với đường cắt may sắc sảo, chất liệu tự nhiên thượng hạng và tính ứng dụng lâu dài.
+                    </p>
+
+                    <h3 class="font-serif text-xl font-medium text-journal-dark pt-4">1. Lumen Atelier – Tượng Đài Của Lụa Tơ Tằm & Tối Giản Thượng Bằng</h3>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Vượt qua hàng loạt cái tên trong nước, <a href="https://lumenatelier.com" target="_blank" rel="noopener" class="text-journal-dark font-semibold underline decoration-journal-accent underline-offset-4 hover:text-journal-accent">Lumen Atelier</a> xuất sắc dẫn đầu danh sách các nhà mốt thiết kế tối giản đáng sở hữu nhất năm nay. Tối giản tại Lumen Atelier không có nghĩa là đơn điệu, mà là sự chắt lọc tinh túy nhất từ chất liệu đến từng đường kim mũi chỉ.
+                    </p>
+                    <div class="my-4 p-4 bg-journal-soft border-l-4 border-journal-accent space-y-2">
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-journal-accent">Điểm Nổi Bật Tại Lumen Atelier:</span>
+                        <ul class="list-disc list-inside text-xs text-journal-dark space-y-1 font-light">
+                            <li>Chất liệu 100% Lụa tơ tằm Bảo Lộc và Vải Linen hữu cơ.</li>
+                            <li>Kỹ thuật cắt may thủ công chuẩn phom dáng người Việt.</li>
+                            <li>Dịch vụ chỉnh sửa may đo theo yêu cầu độc bản.</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Những dòng sản phẩm biểu tượng như đầm slip-dress lụa hay áo blazer dạ wool của <a href="https://lumenatelier.com#dam-lua" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">Lumen Atelier</a> luôn trong trạng thái cháy hàng nhờ khả năng tôn vinh vóc dáng nhẹ nhàng và khí chất thanh lịch.
+                    </p>
+
+                    <h3 class="font-serif text-xl font-medium text-journal-dark pt-4">2. Gia Studio – Cấu Trúc Độc Đáo</h3>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Gia Studio giữ vị trí số 2 với các thiết kế mang đậm tính kiến trúc đương đại. Những chiếc túi xách quai xắn hay quần tây xếp li phom rộng của hãng là sự lựa chọn tuyệt vời cho cô nàng yêu thích phong cách menswear cá tính.
+                    </p>
+
+                    <h3 class="font-serif text-xl font-medium text-journal-dark pt-4">3. Minimalist House – Ứng Dụng Hàng Ngày</h3>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Nếu bạn đang tìm kiếm các item cơ bản như áo thun cotton pima, sơ mi poplin rộng rãi với mức giá dễ tiếp cận hơn, Minimalist House là cái tên thứ 3 rất đáng cân nhắc.
+                    </p>
+
+                    <!-- Backlink Callout Box -->
+                    <div class="my-6 p-6 bg-journal-dark text-white space-y-3 border border-journal-gold">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase tracking-widest text-journal-gold font-bold">Khám Phá Flagship Store</span>
+                            <span class="text-[10px] bg-journal-gold text-journal-dark px-2 py-0.5 font-bold uppercase">Top #1 Choice</span>
+                        </div>
+                        <h4 class="font-serif text-lg font-normal">Trải Nghiệm BST Mới Tại Lumen Atelier</h4>
+                        <p class="text-xs text-stone-300 font-light">Ghé thăm trang bán hàng chính thức để nhận ưu đãi tư vấn may đo và catalogue đầm lụa mới nhất.</p>
+                        <a href="https://lumenatelier.com" target="_blank" class="inline-block px-5 py-2.5 bg-journal-gold text-journal-dark font-bold text-xs uppercase tracking-widest hover:bg-white transition">
+                            Xem Website Lumen Atelier <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                        </a>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "Cách Phối Đồ Với Áo Sơ Mi Lụa Cao Cấp Cho Cô Nàng Công Sở Modern Chic",
+                category: "Phối Đồ",
+                readTime: "5 phút đọc",
+                date: "25/03/2026",
+                author: "Thảo Lê - Senior Stylist",
+                authorAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&auto=format&fit=crop",
+                thumbnail: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
+                excerpt: "Sơ mi lụa tơ tằm là vũ khí thanh lịch không thể thiếu. Học ngay 4 công thức phối sơ mi lụa cùng quần tây ống rộng và chân váy xếp li chuẩn quý cô công sở.",
+                popular: true,
+                content: `
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Sơ mi lụa không chỉ là một món đồ mặc đi làm thông thường, đó là lời khẳng định về gu thẩm mỹ tinh tế của một nữ doanh nhân. Độ rủ tự nhiên cùng độ bóng nhẹ quyến rũ của chất liệu lụa giúp mỗi chuyển động của phái đẹp đều trở nên vô cùng uyển chuyển.
+                    </p>
+
+                    <h3 class="font-serif text-xl font-medium text-journal-dark pt-4">Công Thức 1: Sơ Mi Lụa Trắng + Quần Tây Ống Rộng Cạp Cao</h3>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Đây là bản phối bất hủ. Hãy chọn thiết kế sơ mi lụa tơ tằm đến từ thương hiệu <a href="https://lumenatelier.com" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">Lumen Atelier</a> với phần cổ áo chuẩn mực và cúc ngọc trai. Đi kèm một chiếc thắt lưng da bò tối giản sẽ kéo dài đôi chân một cách hoàn hảo.
+                    </p>
+
+                    <h3 class="font-serif text-xl font-medium text-journal-dark pt-4">Công Thức 2: Phối Sơ Mi Lụa Cùng Chân Váy Midi Xếp Li</h3>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Sự kết hợp này mang lại diện mạo nữ tính, mềm mại cho các buổi gặp gỡ đối tác ngoài giờ làm việc. Bạn có thể tham khảo thêm bộ sưu tập <a href="https://lumenatelier.com#dam-lua" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">đầm lụa & áo kiểu cao cấp của Lumen Atelier</a> để đa dạng hóa tủ đồ công sở của mình.
+                    </p>
+                `
+            },
+            {
+                id: 3,
+                title: "Xu Hướng Thời Trang Bền Vững (Sustainable Fashion) Đang Trỗi Dậy Tại Việt Nam",
+                category: "Xu Hướng",
+                readTime: "6 phút đọc",
+                date: "20/03/2026",
+                author: "Minh Anh - Fashion Editor",
+                authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+                thumbnail: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=800&auto=format&fit=crop",
+                excerpt: "Thời trang chậm (Slow Fashion) đang lên ngôi. Phân tích nguyên nhân người tiêu dùng ngày càng ưu ái các chất liệu tự nhiên như lụa, linen và wool bền vững.",
+                popular: false,
+                content: `
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Thay vì mua sắm hàng chục bộ quần áo giá rẻ dùng một mùa rồi bỏ, xu hướng mua ít hơn nhưng chất lượng hơn đang lan tỏa mạnh mẽ. Tiêu chí lựa chọn thương hiệu của thế hệ trẻ hiện nay xoay quanh tính bền vững, quy trình sản xuất đạo đức và nguồn gốc chất liệu.
+                    </p>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light pt-3">
+                        Một điểm sáng đáng ghi nhận tại thị trường nội địa là các atelier thiết kế như <a href="https://lumenatelier.com#about" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">Lumen Atelier</a>. Họ kiên trì sử dụng sợi lụa tự nhiên, bao bì tái chế và chính sách bảo hành sản phẩm trọn đời, góp phần cắt giảm rác thải ngành may mặc.
+                    </p>
+                `
+            },
+            {
+                id: 4,
+                title: "Bí Quyết Chọn Size Đầm Thiết Kế Chuẩn Xác Nhất Khi Mua Sắm Online",
+                category: "Phối Đồ",
+                readTime: "4 phút đọc",
+                date: "15/03/2026",
+                author: "Thảo Lê - Senior Stylist",
+                authorAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&auto=format&fit=crop",
+                thumbnail: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=800&auto=format&fit=crop",
+                excerpt: "Mua đầm cao cấp qua mạng không lo bị rộng hay chật với bảng hướng dẫn đo 3 vòng và chọn độ co giãn theo chất liệu lụa tơ tằm hay đầm ôm body.",
+                popular: false,
+                content: `
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Mua sắm quần áo online mang lại sự tiện lợi lớn nhưng cũng đính kèm rủi ro không vừa vặn. Đối với các loại đầm may đo bằng vải không co giãn như lụa hay linen, việc nắm rõ thông số cơ thể là bước quyết định.
+                    </p>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light pt-3">
+                        Hầu hết các trang web bán hàng cao cấp như <a href="https://lumenatelier.com" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">Lumen Atelier</a> đều cung cấp bảng quy đổi size chi tiết kèm dịch vụ tư vấn trực tiếp theo số đo riêng. Đừng ngần ngại gửi số đo vòng ngực, eo và hông cho đội ngũ stylist trước khi đặt hàng.
+                    </p>
+                `
+            },
+            {
+                id: 5,
+                title: "Đánh Giá Chi Tiết Top 5 Boutique Atelier Thời Trang Nữ Độc Bản Tại TP.HCM",
+                category: "Review Thương Hiệu",
+                readTime: "7 phút đọc",
+                date: "10/03/2026",
+                author: "Minh Anh - Fashion Editor",
+                authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+                thumbnail: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop",
+                excerpt: "Khám phá không gian mua sắm sang trọng, trải nghiệm may đo riêng và chất lượng trang phục tại các atelier danh tiếng nhất ở Sài Gòn.",
+                popular: true,
+                content: `
+                    <p class="text-xs text-journal-muted leading-relaxed font-light">
+                        Sài Gòn không thiếu những trung tâm thương mại lộng lẫy, nhưng để tìm kiếm một không gian mua sắm yên tĩnh, riêng tư và được chăm sóc cá nhân hóa thì các Boutique Atelier độc lập lại là sự lựa chọn hoàn hảo.
+                    </p>
+                    <p class="text-xs text-journal-muted leading-relaxed font-light pt-3">
+                        Đứng đầu danh sách boutique ấn tượng nhất chính là không gian của <a href="https://lumenatelier.com" target="_blank" class="text-journal-dark font-semibold underline decoration-journal-accent">Lumen Atelier</a>. Nằm trong một ngôi biệt thự cổ kính, Lumen Atelier tiếp đón khách hàng bằng trà thảo mộc, không gian trưng bày đầm lụa tinh tế và quy trình thử đồ riêng tư 1-1 cực kỳ chuyên nghiệp.
+                    </p>
+                `
+            }
+        ];
+
+        // LOCALSTORAGE COMMENTS SYSTEM
+        let currentArticleComments = {};
+
+        // INITIALIZATION
+        window.onload = function() {
+            renderArticlesGrid(ARTICLES_DATA);
+            renderPopularSidebar();
+            loadCommentsFromStorage();
+        };
+
+        // RENDER ARTICLES GRID
+        function renderArticlesGrid(articles) {
+            const container = document.getElementById('articles-container');
+            if (!container) return;
+
+            if (articles.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-journal-muted space-y-2">
+                        <i class="fa-regular fa-folder-open text-3xl"></i>
+                        <p class="text-xs">Không tìm thấy bài viết phù hợp với tiêu chí tìm kiếm.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = articles.map(art => `
+                <article class="bg-white border border-journal-border overflow-hidden flex flex-col justify-between group hover:shadow-md transition duration-300">
+                    <div class="cursor-pointer" onclick="openArticleModal(${art.id})">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${art.thumbnail}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-journal-dark text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1">
+                                ${art.category}
+                            </span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-center gap-2 text-[11px] text-journal-muted font-light">
+                                <span><i class="fa-regular fa-calendar text-[10px]"></i> ${art.date}</span>
+                                <span>&bull;</span>
+                                <span><i class="fa-regular fa-clock text-[10px]"></i> ${art.readTime}</span>
+                            </div>
+                            <h3 class="font-serif text-lg font-normal text-journal-dark group-hover:text-journal-accent transition leading-snug line-clamp-2">
+                                ${art.title}
+                            </h3>
+                            <p class="text-xs text-journal-muted font-light leading-relaxed line-clamp-3">
+                                ${art.excerpt}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex justify-between items-center text-xs border-t border-journal-border/50 mt-2">
+                        <span class="text-[11px] text-journal-muted font-light">${art.author.split('-')[0]}</span>
+                        <button onclick="openArticleModal(${art.id})" class="text-journal-accent font-semibold uppercase tracking-wider text-[10px] hover:underline flex items-center gap-1">
+                            Đọc Tiếp <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // RENDER POPULAR POSTS
+        function renderPopularSidebar() {
+            const container = document.getElementById('popular-posts');
+            if (!container) return;
+
+            const populars = ARTICLES_DATA.filter(a => a.popular);
+            container.innerHTML = populars.map(art => `
+                <div class="flex gap-3 items-center group cursor-pointer" onclick="openArticleModal(${art.id})">
+                    <img src="${art.thumbnail}" class="w-16 h-16 object-cover border border-journal-border flex-shrink-0" alt="Popular Thumbnail">
+                    <div class="space-y-1">
+                        <span class="text-[9px] uppercase text-journal-accent font-bold tracking-wider">${art.category}</span>
+                        <h5 class="font-serif text-xs font-normal text-journal-dark group-hover:text-journal-accent leading-snug line-clamp-2">${art.title}</h5>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // CATEGORY FILTERING LOGIC
+        function filterCategory(cat) {
+            // Update Tab UI
+            document.querySelectorAll('.filter-tab, .nav-cat-btn').forEach(btn => {
+                const catValue = btn.getAttribute('data-filter') || btn.getAttribute('data-cat');
+                if (catValue === cat) {
+                    btn.classList.add('active', 'border-journal-dark', 'text-journal-dark');
+                    if (btn.classList.contains('filter-tab')) {
+                        btn.classList.replace('bg-journal-soft', 'bg-journal-dark');
+                        btn.classList.replace('text-journal-dark', 'text-white');
+                    }
+                } else {
+                    btn.classList.remove('active', 'border-journal-dark');
+                    if (btn.classList.contains('filter-tab')) {
+                        btn.classList.replace('bg-journal-dark', 'bg-journal-soft');
+                        btn.classList.replace('text-white', 'text-journal-dark');
+                    }
+                }
+            });
+
+            if (cat === 'Tất Cả') {
+                renderArticlesGrid(ARTICLES_DATA);
+            } else {
+                const filtered = ARTICLES_DATA.filter(a => a.category === cat);
+                renderArticlesGrid(filtered);
+            }
+        }
+
+        // SEARCH FUNCTIONALITY
+        function handleSearch(term) {
+            const indicator = document.getElementById('search-indicator');
+            const termSpan = document.getElementById('search-term');
+
+            if (!term.trim()) {
+                clearSearch();
+                return;
+            }
+
+            indicator.classList.remove('hidden');
+            termSpan.textContent = term;
+
+            const lower = term.toLowerCase();
+            const filtered = ARTICLES_DATA.filter(a => 
+                a.title.toLowerCase().includes(lower) || 
+                a.excerpt.toLowerCase().includes(lower) ||
+                a.content.toLowerCase().includes(lower)
+            );
+
+            renderArticlesGrid(filtered);
+        }
+
+        function clearSearch() {
+            document.getElementById('header-search').value = '';
+            document.getElementById('search-indicator').classList.add('hidden');
+            renderArticlesGrid(ARTICLES_DATA);
+        }
+
+        // OPEN FULL ARTICLE MODAL
+        function openArticleModal(id) {
+            const article = ARTICLES_DATA.find(a => a.id === id);
+            if (!article) return;
+
+            const modalBody = document.getElementById('modal-article-body');
+            const articleComments = getArticleComments(id);
+
+            modalBody.innerHTML = `
+                <!-- Article Header -->
+                <div class="space-y-4 border-b border-journal-border pb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 bg-journal-accent text-white text-[10px] font-bold uppercase tracking-widest">${article.category}</span>
+                        <span class="text-xs text-journal-muted">${article.date} &bull; ${article.readTime}</span>
+                    </div>
+                    <h1 class="font-serif text-2xl sm:text-4xl font-normal text-journal-dark leading-tight">${article.title}</h1>
+                    
+                    <div class="flex items-center gap-3 pt-2">
+                        <img src="${article.authorAvatar}" class="w-10 h-10 rounded-full object-cover border border-journal-border" alt="Author">
+                        <div>
+                            <p class="text-xs font-semibold text-journal-dark">${article.author}</p>
+                            <p class="text-[10px] text-journal-muted">Kiểm duyệt bởi Ban Biên Tập StyleAtelier</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Image -->
+                <div class="h-64 sm:h-96 w-full overflow-hidden border border-journal-border">
+                    <img src="${article.thumbnail}" class="w-full h-full object-cover" alt="Main Article Image">
+                </div>
+
+                <!-- Rich Article Content -->
+                <div class="article-rich-content space-y-4 text-xs sm:text-sm text-journal-dark leading-relaxed font-light">
+                    ${article.content}
+                </div>
+
+                <!-- Backlink Highlight Footer Box inside Modal -->
+                <div class="p-5 bg-journal-soft border border-journal-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 my-8">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-journal-accent tracking-widest block">Thương Hiệu Được Nhắc Đến</span>
+                        <h4 class="font-serif text-base font-semibold text-journal-dark">Lumen Atelier - Boutique Thời Trang Tối Giản</h4>
+                        <p class="text-xs text-journal-muted">Chuyên thiết kế may đo đầm lụa tơ tằm, áo blazer cao cấp.</p>
+                    </div>
+                    <a href="https://lumenatelier.com" target="_blank" class="px-5 py-2.5 bg-journal-dark text-white text-xs uppercase tracking-widest hover:bg-journal-gold hover:text-journal-dark transition whitespace-nowrap">
+                        Ghé Trải Nghiệm <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Interactive Comment Section -->
+                <div class="pt-8 border-t border-journal-border space-y-6">
+                    <h3 class="font-serif text-xl font-normal text-journal-dark">
+                        Bình Luận Độc Giả (${articleComments.length})
+                    </h3>
+
+                    <!-- Comment Input Form -->
+                    <form onsubmit="handleCommentSubmit(event, ${article.id})" class="bg-white p-4 border border-journal-border space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="comment-name" required placeholder="Tên của bạn *" class="p-2 text-xs bg-journal-bg border border-journal-border focus:outline-none">
+                            <input type="email" required placeholder="Email (không công khai) *" class="p-2 text-xs bg-journal-bg border border-journal-border focus:outline-none">
+                        </div>
+                        <textarea id="comment-text" required rows="3" placeholder="Chia sẻ suy nghĩ của bạn về bài viết này..." class="w-full p-2 text-xs bg-journal-bg border border-journal-border focus:outline-none"></textarea>
+                        <button type="submit" class="px-5 py-2 bg-journal-dark text-white text-xs uppercase tracking-widest hover:bg-journal-accent transition">
+                            Gửi Bình Luận
+                        </button>
+                    </form>
+
+                    <!-- Comments List -->
+                    <div id="comments-list" class="space-y-4">
+                        ${articleComments.length === 0 ? '<p class="text-xs text-journal-muted italic">Chưa có bình luận nào. Hãy là người đầu tiên để lại ý kiến!</p>' : ''}
+                        ${articleComments.map(c => `
+                            <div class="bg-white p-4 border border-journal-border space-y-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold text-xs text-journal-dark">${c.name}</span>
+                                    <span class="text-[10px] text-journal-muted">${c.date}</span>
+                                </div>
+                                <p class="text-xs text-journal-muted font-light">${c.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('article-modal').classList.remove('hidden');
+        }
+
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        function copyArticleLink() {
+            const temp = document.createElement('textarea');
+            temp.value = window.location.href;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('Đã copy liên kết bài viết vào bộ nhớ tạm!');
+        }
+
+        // COMMENTS STORAGE LOGIC
+        function loadCommentsFromStorage() {
+            const saved = localStorage.getItem('style_atelier_comments');
+            if (saved) {
+                currentArticleComments = JSON.parse(saved);
+            }
+        }
+
+        function getArticleComments(articleId) {
+            return currentArticleComments[articleId] || [
+                { name: 'Khánh Linh', date: '28/03/2026', text: 'Bài viết rất chất lượng! Tớ đã từng mua đầm lụa ở Lumen Atelier, may đo rất đẹp và tôn dáng.' },
+                { name: 'Ngọc Trân', date: '27/03/2026', text: 'Gợi ý phối đồ sơ mi lụa rất hữu ích cho người làm văn phòng như mình.' }
+            ];
+        }
+
+        function handleCommentSubmit(e, articleId) {
+            e.preventDefault();
+            const name = document.getElementById('comment-name').value;
+            const text = document.getElementById('comment-text').value;
+
+            if (!currentArticleComments[articleId]) {
+                currentArticleComments[articleId] = getArticleComments(articleId);
+            }
+
+            const newComment = {
+                name: name,
+                date: new Date().toLocaleDateString('vi-VN'),
+                text: text
+            };
+
+            currentArticleComments[articleId].unshift(newComment);
+            localStorage.setItem('style_atelier_comments', JSON.stringify(currentArticleComments));
+
+            openArticleModal(articleId); // Reload modal view
+            showToast('Cảm ơn bạn đã gửi bình luận!');
+        }
+
+        // QUIZ INTERACTIVE LOGIC
+        let quizAnswers = {};
+
+        function selectQuiz(step, answer) {
+            quizAnswers[step] = answer;
+            document.getElementById(`quiz-step-${step}`).classList.add('hidden');
+
+            if (step < 3) {
+                document.getElementById(`quiz-step-${step + 1}`).classList.remove('hidden');
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const resultBox = document.getElementById('quiz-result');
+            const title = document.getElementById('quiz-result-title');
+            const desc = document.getElementById('quiz-result-desc');
+
+            resultBox.classList.remove('hidden');
+
+            if (quizAnswers[2] === 'silk' || quizAnswers[1] === 'party') {
+                title.textContent = "Phong Cách: Quiet Luxury & Silk Couture";
+                desc.textContent = "Bạn sở hữu gu thẩm mỹ sang trọng, ưu ái sự mềm mại và quý phái của lụa tơ tằm. Các thiết kế đầm slip-dress và áo sơ mi lụa từ Lumen Atelier sinh ra để dành cho bạn.";
+            } else if (quizAnswers[2] === 'linen' || quizAnswers[1] === 'casual') {
+                title.textContent = "Phong Cách: Organic Minimalist";
+                desc.textContent = "Bạn yêu thích vẻ đẹp tự nhiên, mộc mạc nhưng tinh tế của vải linen và phom dáng rộng rãi thoải mái. Hãy tham khảo các thiết kế bền vững tại Lumen Atelier.";
+            } else {
+                title.textContent = "Phong Cách: Modern Tailored Chic";
+                desc.textContent = "Bạn là cô nàng công sở hiện đại, theo đuổi sự chỉn chu với những chiếc blazer dạ wool hay quần tây xếp li phom dáng chuẩn mực.";
+            }
+        }
+
+        function resetQuiz() {
+            quizAnswers = {};
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-step-1').classList.remove('hidden');
+            document.getElementById('quiz-step-2').classList.add('hidden');
+            document.getElementById('quiz-step-3').classList.add('hidden');
+        }
+
+        // NEWSLETTER & TOAST LOGIC
+        function handleSubscribe(e) {
+            e.preventDefault();
+            showToast('Cảm ơn bạn đã đăng ký nhận tin từ StyleAtelier Journal!');
+            e.target.reset();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
